@@ -1,0 +1,16 @@
+note over browser:
+The browser handles the form submission, packages the data up
+and sends it to the server as a JSON payload
+end note
+note over browser:
+It then resets the state of the form to empty the input
+end note
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+note over server:
+server recieves the form payload as JSON data at the 
+new_note_spa endpoint and pushes the data to the database
+end note
+note over server:
+It then sends a 201 created response to the browser 
+end note
+server-->browser: Sends 201 response
