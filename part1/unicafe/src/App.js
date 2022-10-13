@@ -1,3 +1,4 @@
+import { calculateNewValue } from "@testing-library/user-event/dist/utils";
 import { useState } from "react";
 
 const App = () => {
@@ -6,9 +7,15 @@ const App = () => {
   const [neutral, setNeutral] = useState(0);
   const [bad, setBad] = useState(0);
 
-  const increaseGood = () => setGood(good + 1);
-  const increaseNeutral = () => setNeutral(neutral + 1);
-  const increaseBad = () => setBad(bad + 1);
+  const increaseGood = () => {
+    setGood(good + 1);
+  };
+  const increaseNeutral = () => {
+    setNeutral(neutral + 1);
+  };
+  const increaseBad = () => {
+    setBad(bad + 1);
+  };
 
   return (
     <>
@@ -16,8 +23,9 @@ const App = () => {
       <Button onClick={increaseGood} text="Good" />
       <Button onClick={increaseNeutral} text="Neutral" />
       <Button onClick={increaseBad} text="Bad" />
+
       <Heading title="Statistics" />
-      <Results good={good} neutral={neutral} bad={bad} />
+      <Statistics good={good} neutral={neutral} bad={bad} />
     </>
   );
 };
@@ -34,7 +42,11 @@ const Button = ({ onClick, text }) => {
   );
 };
 
-const Results = ({ good, bad, neutral }) => {
+const Statistics = ({ good, bad, neutral }) => {
+  const total = good + bad + neutral;
+  const average = () => (good - bad) / total;
+  const positive = () => good / total;
+
   return (
     <>
       <table>
@@ -50,6 +62,18 @@ const Results = ({ good, bad, neutral }) => {
           <tr>
             <td>Bad</td>
             <td>{bad}</td>
+          </tr>
+          <tr>
+            <td>All</td>
+            <td>{total}</td>
+          </tr>
+          <tr>
+            <td>Average</td>
+            <td>{average()}</td>
+          </tr>
+          <tr>
+            <td>Positive</td>
+            <td>{positive()}%</td>
           </tr>
         </tbody>
       </table>
