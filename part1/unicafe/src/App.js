@@ -45,38 +45,44 @@ const Button = ({ onClick, text }) => {
 const Statistics = ({ good, bad, neutral }) => {
   const total = good + bad + neutral;
   const average = () => (good - bad) / total;
-  const positive = () => good / total;
+  const positive = () => (good / total) * 100;
 
-  return (
-    <>
-      <table>
-        <tbody>
-          <tr>
-            <td>Good</td>
-            <td>{good}</td>
-          </tr>
-          <tr>
-            <td>Neutral</td>
-            <td>{neutral}</td>
-          </tr>
-          <tr>
-            <td>Bad</td>
-            <td>{bad}</td>
-          </tr>
-          <tr>
-            <td>All</td>
-            <td>{total}</td>
-          </tr>
-          <tr>
-            <td>Average</td>
-            <td>{average()}</td>
-          </tr>
-          <tr>
-            <td>Positive</td>
-            <td>{positive()}%</td>
-          </tr>
-        </tbody>
-      </table>
-    </>
-  );
+  if (total >= 1) {
+    return (
+      <>
+        <table>
+          <tbody>
+            <tr>
+              <td>Good</td>
+              <td>{good}</td>
+            </tr>
+            <tr>
+              <td>Neutral</td>
+              <td>{neutral}</td>
+            </tr>
+            <tr>
+              <td>Bad</td>
+              <td>{bad}</td>
+            </tr>
+            <tr>
+              <td>All</td>
+              <td>{total}</td>
+            </tr>
+            <tr>
+              <td>Average</td>
+              <td>{average()}</td>
+            </tr>
+            <tr>
+              <td>Positive</td>
+              <td>{positive()}%</td>
+            </tr>
+          </tbody>
+        </table>
+      </>
+    );
+  } else {
+    return <p>No feedback given.</p>;
+  }
+
+  
 };
