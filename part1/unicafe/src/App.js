@@ -42,40 +42,32 @@ const Button = ({ onClick, text }) => {
   );
 };
 
+const StatisticLine = ({ label, value }) => {
+  return (
+    <tr>
+      <td>{label}</td>
+      <td>{value}</td>
+    </tr>
+  );
+};
+
 const Statistics = ({ good, bad, neutral }) => {
   const total = good + bad + neutral;
   const average = () => (good - bad) / total;
   const positive = () => (good / total) * 100;
+  const positivePercentage = `${positive()}%`;
 
   if (total >= 1) {
     return (
       <>
         <table>
           <tbody>
-            <tr>
-              <td>Good</td>
-              <td>{good}</td>
-            </tr>
-            <tr>
-              <td>Neutral</td>
-              <td>{neutral}</td>
-            </tr>
-            <tr>
-              <td>Bad</td>
-              <td>{bad}</td>
-            </tr>
-            <tr>
-              <td>All</td>
-              <td>{total}</td>
-            </tr>
-            <tr>
-              <td>Average</td>
-              <td>{average()}</td>
-            </tr>
-            <tr>
-              <td>Positive</td>
-              <td>{positive()}%</td>
-            </tr>
+            <StatisticLine label="Good" value={good} />
+            <StatisticLine label="Neutral" value={neutral} />
+            <StatisticLine label="Bad" value={bad} />
+            <StatisticLine label="All" value={total} />
+            <StatisticLine label="Average" value={average()} />
+            <StatisticLine label="Positive" value={positivePercentage} />
           </tbody>
         </table>
       </>
@@ -83,6 +75,4 @@ const Statistics = ({ good, bad, neutral }) => {
   } else {
     return <p>No feedback given.</p>;
   }
-
-  
 };
