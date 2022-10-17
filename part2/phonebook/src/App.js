@@ -1,5 +1,57 @@
 import { useState } from "react";
 
+const Filter = ({ searchQuery, onChange }) => {
+  return (
+    <div>
+      Filter by name: <input value={searchQuery} onChange={onChange} />
+    </div>
+  );
+};
+
+const PersonForm = ({
+  newName,
+  handleNameChange,
+  newNumber,
+  handleNumberChange,
+  addName,
+}) => {
+  return (
+    <form>
+      <PersonInput label="name" value={newName} onChange={handleNameChange} />
+      <PersonInput
+        label="number"
+        value={newNumber}
+        onChange={handleNumberChange}
+      />
+      <button type="submit" onClick={addName}>
+        add
+      </button>
+    </form>
+  );
+};
+
+const PersonInput = ({ label, value, onChange }) => {
+  return (
+    <div>
+      {label} <input value={value} onChange={onChange} />
+    </div>
+  );
+};
+
+const Persons = ({ persons }) => {
+  return (
+    <>
+      <ul>
+        {persons.map((person) => (
+          <li key={person.name}>
+            {person.name} {person.number}
+          </li>
+        ))}
+      </ul>
+    </>
+  );
+};
+
 const App = () => {
   const phonebookRecords = [
     { name: "Arto Hellas", number: "040-123456", id: 1 },
@@ -41,10 +93,14 @@ const App = () => {
       number: newNumber,
     };
     let isDuplicate = persons.filter((person) => person.name === newName);
-    isDuplicate.length > 0
-      ? alert(`${newName} already exists.`)
-      : setPersons(persons.concat(phonebookRecordObject));
-
+    if (isDuplicate.length > 0) {
+      alert(`${newName} already exists.`);
+    } else {
+      let newPersons = persons.concat(phonebookRecordObject);
+      setPersons(newPersons);
+      setSearchQuery("");
+      setSearchResults(newPersons);
+    }
     setNewName("");
     setNewNumber("");
   };
@@ -52,31 +108,16 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-        Filter by name:{" "}
-        <input value={searchQuery} onChange={handleQueryChange} />
-      </div>
-      <form>
-        <div>
-          name: <input value={newName} onChange={handleNameChange} />
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={handleNumberChange} />
-        </div>
-        <div>
-          <button type="submit" onClick={addName}>
-            add
-          </button>
-        </div>
-      </form>
+      <Filter searchQuery={searchQuery} onChange={handleQueryChange} />
+      <PersonForm
+        newName={newName}
+        newNumber={newNumber}
+        handleNameChange={handleNameChange}
+        handleNumberChange={handleNumberChange}
+        addName={addName}
+      />
       <h2>Numbers</h2>
-      <ul>
-        {searchResults.map((person) => (
-          <li key={person.name}>
-            {person.name} {person.number}
-          </li>
-        ))}
-      </ul>
+      <Persons persons={searchResults} />
     </div>
   );
 };
