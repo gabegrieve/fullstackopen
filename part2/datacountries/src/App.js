@@ -1,6 +1,49 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
+const Button = ({ onClick, text }) => <button onClick={onClick}>{text}</button>;
+
+const Countries = ({ countries /*showCountry*/ }) => {
+  if (countries.length >= 10) {
+    return (
+      <>
+        <p>Too many matches, specify another filter.</p>
+      </>
+    );
+  } else if (countries.length === 1) {
+    return (
+      <>
+        <h1>{countries[0].name}</h1>
+        <p>Capital: {countries[0].capital}</p>
+        <p>Area: {countries[0].area}</p>
+        <h2>Languages</h2>
+        <ul>
+          {countries[0].languages.map((language) => {
+            return <li key={language.iso639_1}>{language.name}</li>;
+          })}
+        </ul>
+        <img
+          src={countries[0].flags.png}
+          alt={"Flag of " + countries[0].name}
+        />
+      </>
+    );
+  } else {
+    return (
+      <ul>
+        {countries.map((country) => {
+          return (
+            <li key={country.alpha2Code}>
+              <span>{country.name}</span>
+              {/* <Button onClick={showCountry} text="Show" /> */}
+            </li>
+          );
+        })}
+      </ul>
+    );
+  }
+};
+
 const App = () => {
   const [countries, setCountries] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -19,53 +62,23 @@ const App = () => {
     setSearchResults(searchResults);
   };
 
+  // This doesn't work
+  //
+  // const showCountry = (country) => {
+  //   setSearchResults(country);
+  // };
+
   useEffect(() => {
     axios.get("https://restcountries.com/v2/all").then((response) => {
       setCountries(response.data);
     });
   }, []);
 
-  const Countries = ({ countries }) => {
-    if (countries.length >= 10) {
-      return (
-        <>
-          <p>Too many matches, specify another filter.</p>
-        </>
-      );
-    } else if (countries.length === 1) {
-      return (
-        <>
-          <h1>{countries[0].name}</h1>
-          <p>Capital: {countries[0].capital}</p>
-          <p>Area: {countries[0].area}</p>
-          <h2>Languages</h2>
-          <ul>
-            {countries[0].languages.map((language) => {
-              return <li key={language.iso639_1}>{language.name}</li>;
-            })}
-          </ul>
-          <img
-            src={countries[0].flags.png}
-            alt={"Flag of " + countries[0].name}
-          />
-        </>
-      );
-    } else {
-      return (
-        <ul>
-          {countries.map((country) => {
-            return <li key={country.alpha2Code}>{country.name}</li>;
-          })}
-        </ul>
-      );
-    }
-  };
-
   return (
     <>
       <span>Find countries</span>
       <input value={searchQuery} onChange={handleSearchQueryChange} />
-      <Countries countries={searchResults} />
+      <Countries countries={searchResults} /*showCountry={showCountry}*/ />
     </>
   );
 };
