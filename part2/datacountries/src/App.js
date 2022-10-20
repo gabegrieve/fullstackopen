@@ -1,9 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-const Button = ({ onClick, text }) => <button onClick={onClick}>{text}</button>;
-
-const Countries = ({ countries /*showCountry*/ }) => {
+const Countries = ({ countries, showCountry }) => {
   if (countries.length >= 10) {
     return (
       <>
@@ -35,7 +33,7 @@ const Countries = ({ countries /*showCountry*/ }) => {
           return (
             <li key={country.alpha2Code}>
               <span>{country.name}</span>
-              {/* <Button onClick={showCountry} text="Show" /> */}
+              <button onClick={() => showCountry(country)}>Show</button>
             </li>
           );
         })}
@@ -62,11 +60,9 @@ const App = () => {
     setSearchResults(searchResults);
   };
 
-  // This doesn't work
-  //
-  // const showCountry = (country) => {
-  //   setSearchResults(country);
-  // };
+  const showCountry = (country) => {
+    setSearchResults([country]);
+  };
 
   useEffect(() => {
     axios.get("https://restcountries.com/v2/all").then((response) => {
@@ -78,7 +74,7 @@ const App = () => {
     <>
       <span>Find countries</span>
       <input value={searchQuery} onChange={handleSearchQueryChange} />
-      <Countries countries={searchResults} /*showCountry={showCountry}*/ />
+      <Countries countries={searchResults} showCountry={showCountry} />
     </>
   );
 };
