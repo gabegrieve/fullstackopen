@@ -54,12 +54,31 @@ const Persons = ({ persons, deletePerson }) => {
   );
 };
 
+const Notification = ({ type, message }) => {
+  const errorStyles = {
+    color: "#ef4444",
+    backgroundColor: "#fee2e2",
+    padding: "1rem",
+  };
+  const successStyles = {
+    color: "#059669",
+    backgroundColor: "#d1fae5",
+    padding: "1rem",
+  };
+  const notificationStyles = type === "error" ? errorStyles : successStyles;
+  if (message === null) {
+    return null;
+  }
+  return <div style={notificationStyles}>{message}</div>;
+};
+
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const [notification, setNotification] = useState([null, null]);
 
   useEffect(() => {
     getAllPersons();
@@ -118,7 +137,13 @@ const App = () => {
             );
             setPersons(updatedPersons);
             setSearchResults(updatedPersons);
+            setNotification([
+              "success",
+              `Updated ${newName}'s number successfully`,
+            ]);
           });
+      } else {
+        setNotification(["error", `${newName} already exists`]);
       }
     } else {
       personsService.create(phonebookRecordObject).then((newPerson) => {
@@ -126,6 +151,7 @@ const App = () => {
         setPersons(newPersons);
         setSearchResults(newPersons);
         setSearchQuery("");
+        setNotification(["success", `Added ${newPerson.name}`]);
       });
     }
     setNewName("");
@@ -133,19 +159,29 @@ const App = () => {
   };
 
   const deletePerson = (id) => {
-    if (
-      window.confirm(`Do you really want to delete ${persons[id - 1].name}?`)
-    ) {
-      personsService.destroy(id).then(() => {
-        getAllPersons();
-      });
+    const person = persons.find((p) => p.id === id);
+    if (window.confirm(`Do you really want to delete ${person.name}?`)) {
+      personsService
+        .destroy(id)
+        .then(() => {
+          getAllPersons();
+          setNotification(["success", `Deleted ${person.name}`]);
+        })
+        .catch((error) => {
+          setNotification([
+            "error",
+            `Information for ${person.name} has already been deleted from the server`,
+          ]);
+        });
     }
   };
 
   return (
     <div>
-      <h2>Phonebook</h2>
+      <Notification type={notification[0]} message={notification[1]} />
+      <h1>Phonebook</h1>
       <Filter searchQuery={searchQuery} onChange={handleQueryChange} />
+      <h2>Add new</h2>
       <PersonForm
         newName={newName}
         newNumber={newNumber}
