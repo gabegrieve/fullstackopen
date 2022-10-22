@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import personsService from "./services/persons";
 
 const Filter = ({ searchQuery, onChange }) => {
   return (
@@ -53,17 +54,22 @@ const Persons = ({ persons }) => {
 };
 
 const App = () => {
-  const phonebookRecords = [
-    { name: "Arto Hellas", number: "040-123456", id: 1 },
-    { name: "Ada Lovelace", number: "39-44-5323523", id: 2 },
-    { name: "Dan Abramov", number: "12-43-234345", id: 3 },
-    { name: "Mary Poppendieck", number: "39-23-6423122", id: 4 },
-  ];
-  const [persons, setPersons] = useState(phonebookRecords);
+  const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState(phonebookRecords);
+  const [searchResults, setSearchResults] = useState([]);
+
+  const baseUrl = "http://localhost:3001";
+
+  useEffect(() => {
+    personsService.getAll().then((intialPersons) => {
+      setPersons(intialPersons);
+      setSearchResults(intialPersons);
+    });
+  }, []);
+
+  console.log(persons);
 
   const handleNameChange = (event) => {
     setNewName(event.target.value);
@@ -96,10 +102,12 @@ const App = () => {
     if (isDuplicate.length > 0) {
       alert(`${newName} already exists.`);
     } else {
-      let newPersons = persons.concat(phonebookRecordObject);
-      setPersons(newPersons);
-      setSearchQuery("");
-      setSearchResults(newPersons);
+      personsService.create(phonebookRecordObject).then((newPerson) => {
+        let newPersons = persons.concat(newPerson);
+        setPersons(newPersons);
+        setSearchResults(newPersons);
+        setSearchQuery("");
+      });
     }
     setNewName("");
     setNewNumber("");
