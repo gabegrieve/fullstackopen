@@ -39,13 +39,14 @@ const PersonInput = ({ label, value, onChange }) => {
   );
 };
 
-const Persons = ({ persons }) => {
+const Persons = ({ persons, deletePerson }) => {
   return (
     <>
       <ul>
         {persons.map((person) => (
           <li key={person.name}>
             {person.name} {person.number}
+            <button onClick={() => deletePerson(person.id)}>Delete</button>
           </li>
         ))}
       </ul>
@@ -60,16 +61,16 @@ const App = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
 
-  const baseUrl = "http://localhost:3001";
-
   useEffect(() => {
+    getAllPersons();
+  }, []);
+
+  const getAllPersons = () => {
     personsService.getAll().then((intialPersons) => {
       setPersons(intialPersons);
       setSearchResults(intialPersons);
     });
-  }, []);
-
-  console.log(persons);
+  };
 
   const handleNameChange = (event) => {
     setNewName(event.target.value);
@@ -113,6 +114,16 @@ const App = () => {
     setNewNumber("");
   };
 
+  const deletePerson = (id) => {
+    if (
+      window.confirm(`Do you really want to delete ${persons[id - 1].name}?`)
+    ) {
+      personsService.destroy(id).then(() => {
+        getAllPersons();
+      });
+    }
+  };
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -125,7 +136,7 @@ const App = () => {
         addName={addName}
       />
       <h2>Numbers</h2>
-      <Persons persons={searchResults} />
+      <Persons persons={searchResults} deletePerson={deletePerson} />
     </div>
   );
 };
