@@ -99,9 +99,27 @@ const App = () => {
       name: newName,
       number: newNumber,
     };
-    let isDuplicate = persons.filter((person) => person.name === newName);
-    if (isDuplicate.length > 0) {
-      alert(`${newName} already exists.`);
+    let existingPerson = persons.filter((person) => person.name === newName);
+    if (existingPerson.length > 0) {
+      if (
+        window.confirm(
+          `${newName} already exists, do you want to replace the old number?`
+        )
+      ) {
+        let newPerson = {
+          ...existingPerson[0],
+          number: phonebookRecordObject.number,
+        };
+        personsService
+          .update(existingPerson[0].id, newPerson)
+          .then((updatedPerson) => {
+            let updatedPersons = persons.map((p) =>
+              p.id !== updatedPerson.id ? p : updatedPerson
+            );
+            setPersons(updatedPersons);
+            setSearchResults(updatedPersons);
+          });
+      }
     } else {
       personsService.create(phonebookRecordObject).then((newPerson) => {
         let newPersons = persons.concat(newPerson);
