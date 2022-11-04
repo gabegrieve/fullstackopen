@@ -141,8 +141,6 @@ const App = () => {
               "success",
               `Updated ${newName}'s number successfully`,
             ]);
-            setNewName(undefined);
-            setNewNumber(undefined);
           })
           .catch((error) => {
             setNotification(["error", error.response.data.error]);
@@ -159,8 +157,6 @@ const App = () => {
           setSearchResults(newPersons);
           setSearchQuery("");
           setNotification(["success", `Added ${newPerson.name} successfully!`]);
-          setNewName(undefined);
-          setNewNumber(undefined);
         })
         .catch((error) => {
           setNotification(["error", error.response.data.error]);
