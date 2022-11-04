@@ -151,7 +151,7 @@ const App = () => {
         setPersons(newPersons);
         setSearchResults(newPersons);
         setSearchQuery("");
-        setNotification(["success", `Added ${newPerson.name}`]);
+        setNotification(["success", `Added ${newPerson.name} successfully!`]);
       });
     }
     setNewName("");
