@@ -74,8 +74,8 @@ const Notification = ({ type, message }) => {
 
 const App = () => {
   const [persons, setPersons] = useState([]);
-  const [newName, setNewName] = useState("");
-  const [newNumber, setNewNumber] = useState("");
+  const [newName, setNewName] = useState(undefined);
+  const [newNumber, setNewNumber] = useState(undefined);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [notification, setNotification] = useState([null, null]);
@@ -141,21 +141,31 @@ const App = () => {
               "success",
               `Updated ${newName}'s number successfully`,
             ]);
+            setNewName(undefined);
+            setNewNumber(undefined);
+          })
+          .catch((error) => {
+            setNotification(["error", error.response.data.error]);
           });
       } else {
         setNotification(["error", `${newName} already exists`]);
       }
     } else {
-      personsService.create(phonebookRecordObject).then((newPerson) => {
-        let newPersons = persons.concat(newPerson);
-        setPersons(newPersons);
-        setSearchResults(newPersons);
-        setSearchQuery("");
-        setNotification(["success", `Added ${newPerson.name} successfully!`]);
-      });
+      personsService
+        .create(phonebookRecordObject)
+        .then((newPerson) => {
+          let newPersons = persons.concat(newPerson);
+          setPersons(newPersons);
+          setSearchResults(newPersons);
+          setSearchQuery("");
+          setNotification(["success", `Added ${newPerson.name} successfully!`]);
+          setNewName(undefined);
+          setNewNumber(undefined);
+        })
+        .catch((error) => {
+          setNotification(["error", error.response.data.error]);
+        });
     }
-    setNewName("");
-    setNewNumber("");
   };
 
   const deletePerson = (id) => {
