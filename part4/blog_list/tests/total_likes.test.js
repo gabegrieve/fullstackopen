@@ -2,6 +2,7 @@ const {
   totalLikes,
   favouriteBlog,
   mostBlogs,
+  mostLikes,
 } = require("../utils/list_helper");
 
 const singleBlog = [
@@ -83,7 +84,7 @@ describe("total likes", () => {
   });
 });
 
-describe("favourite blog", () => {
+describe("blog stats", () => {
   test("favourite blog has the most likes", () => {
     const expectedResult = {
       title: "Canonical string reduction",
@@ -93,15 +94,22 @@ describe("favourite blog", () => {
     const result = favouriteBlog(blogs);
     expect(result).toEqual(expectedResult);
   });
-});
 
-describe("most blogs", () => {
-  test("aubhtor with the most blogs", () => {
+  test("author with the most blogs", () => {
     const expectedResult = {
       author: "Robert C. Martin",
       blogs: 3,
     };
     const result = mostBlogs(blogs);
+    expect(result).toEqual(expectedResult);
+  });
+
+  test("author with the most likes", () => {
+    const expectedResult = {
+      author: "Edsger W. Dijkstra",
+      likes: 17,
+    };
+    const result = mostLikes(blogs);
     expect(result).toEqual(expectedResult);
   });
 });

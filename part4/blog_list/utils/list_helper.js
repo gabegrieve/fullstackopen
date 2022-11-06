@@ -50,9 +50,41 @@ const mostBlogs = (blogs) => {
   return authorWithMostBlogs;
 };
 
+const mostLikes = (blogs) => {
+  const authors = blogs.map((blog) => {
+    return blog.author;
+  });
+  const uniqAuthors = _.uniq(authors);
+
+  const authorLikes = uniqAuthors.map((author) => {
+    const likes = blogs.reduce((sum, blog) => {
+      if (blog.author === author) {
+        return (sum += blog.likes);
+      } else {
+        return sum;
+      }
+    }, 0);
+    return {
+      author: author,
+      likes: likes,
+    };
+  });
+
+  const authorWithMostLikes = authorLikes.reduce((initial, author) => {
+    if (initial.likes >= author.likes) {
+      return initial;
+    } else {
+      return author;
+    }
+  });
+
+  return authorWithMostLikes;
+};
+
 module.exports = {
   dummy,
   totalLikes,
   favouriteBlog,
   mostBlogs,
+  mostLikes,
 };
