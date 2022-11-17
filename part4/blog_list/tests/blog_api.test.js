@@ -63,6 +63,18 @@ test("a valid blog can be added", async () => {
 test("a blog with no title cannot be added", async () => {
   const newBlog = {
     author: "Some Guy",
+    url: "http://google.com",
+    likes: 80,
+  };
+  await api.post("/api/blogs").send(newBlog).expect(400);
+  const blogsAtEnd = await helper.blogsInDb();
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length);
+});
+
+test("a blog with no url cannot be added", async () => {
+  const newBlog = {
+    title: "Blog with no URL",
+    author: "Some Guy",
     likes: 80,
   };
   await api.post("/api/blogs").send(newBlog).expect(400);
@@ -73,6 +85,7 @@ test("a blog with no title cannot be added", async () => {
 test("a blog with no likes defaults to 0", async () => {
   const newBlog = {
     title: "Test blog no likes",
+    url: "http://google.com",
   };
   await api.post("/api/blogs").send(newBlog).expect(201);
   const blogsAtEnd = await helper.blogsInDb();
