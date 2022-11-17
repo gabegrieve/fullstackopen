@@ -70,6 +70,15 @@ test("a blog with no title cannot be added", async () => {
   expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length);
 });
 
+test("a blog with no likes defaults to 0", async () => {
+  const newBlog = {
+    title: "Test blog no likes",
+  };
+  await api.post("/api/blogs").send(newBlog).expect(201);
+  const blogsAtEnd = await helper.blogsInDb();
+  expect(blogsAtEnd[blogsAtEnd.length - 1].likes).toEqual(0);
+});
+
 test("A specific blog can be viewed", async () => {
   const blogsAtStart = await helper.blogsInDb();
   const blogToView = blogsAtStart[0];
