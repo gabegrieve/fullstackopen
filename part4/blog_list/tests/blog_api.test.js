@@ -31,6 +31,16 @@ test("a specific blog is returned", async () => {
   expect(titles).toContain("Gabes cool blog");
 });
 
+test("all blog posts have the id property", async () => {
+  const response = await api.get("/api/blogs");
+  const id = response.body.map((r) => expect(r.id).toBeDefined());
+});
+
+test("all blog posts have a unique id", async () => {
+  const response = await api.get("/api/blogs");
+  const id = response.body.map((r) => r.id);
+});
+
 test("a valid blog can be added", async () => {
   const newBlog = {
     title: "A new blog post",
