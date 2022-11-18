@@ -4,11 +4,12 @@ GET http://localhost:3003/api/blogs/
 
 POST http://localhost:3003/api/blogs/
 content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hZGRvZyIsImlkIjoiNjM3NzA1YzRjNTFkODhiOWU0NjVjM2M2IiwiaWF0IjoxNjY4NzQ1MzM1fQ.MHX-f8bmxysFyPJRj9_eibEnHSMJp1-6Xwf12smvLuI
 
 {
-  "title": "Gabes Cool Blog",
-  "author": "Gabe Grieve",
-  "url": "https://gabegrieve.com",
+  "title": "Mad Dogs Blog",
+  "author": "Mad Dog",
+  "url": "https://maddog.com",
   "likes": 100,
-  "userId": "6376bfac8b4f4572491a31b5"
+  "userId": "637705c4c51d88b9e465c3c6"
 }
