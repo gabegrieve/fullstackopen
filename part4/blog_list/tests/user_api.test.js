@@ -40,7 +40,7 @@ describe("when there is initially one user in db", () => {
     const usersAtStart = await helper.usersInDb();
     const newUser = {
       username: "root",
-      name: "Sneaky boi",
+      name: "Testi boi",
       password: "1234",
     };
     const result = await api
@@ -50,6 +50,37 @@ describe("when there is initially one user in db", () => {
       .expect("Content-Type", /application\/json/);
 
     expect(result.body.error).toContain("username must be unique");
+
+    const usersAtEnd = await helper.usersInDb();
+    expect(usersAtEnd).toEqual(usersAtStart);
+  });
+
+  test("creation fails if username is not in request", async () => {
+    const usersAtStart = await helper.usersInDb();
+    const newUser = {
+      name: "Testi boi",
+      password: "1234",
+    };
+    const result = await api.post("/api/users").send(newUser).expect(400);
+    expect(result.body.error).toEqual(
+      "User validation failed: username: Username is a required field"
+    );
+
+    const usersAtEnd = await helper.usersInDb();
+    expect(usersAtEnd).toEqual(usersAtStart);
+  });
+
+  test("creation fails if password is too short", async () => {
+    const usersAtStart = await helper.usersInDb();
+    const newUser = {
+      username: "badpw",
+      name: "Testi boi",
+      password: "12",
+    };
+    const result = await api.post("/api/users").send(newUser).expect(400);
+    expect(result.body.error).toEqual(
+      "passwords must be at least 3 characters long"
+    );
 
     const usersAtEnd = await helper.usersInDb();
     expect(usersAtEnd).toEqual(usersAtStart);

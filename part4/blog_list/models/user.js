@@ -1,7 +1,11 @@
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
-  username: String,
+  username: {
+    type: String,
+    required: [true, "Username is a required field"],
+    minLength: [3, "Username must be at least 3 characters long"],
+  },
   name: String,
   passwordHash: String,
   blogs: [

@@ -5,7 +5,18 @@ POST http://localhost:3003/api/users/
 content-type: application/json
 
 {
-  "username": "maddog",
+  "username": "maddog23",
   "name": "Mad Dog",
-  "password": "imamaddog"
+  "password": "123"
+}
+
+###
+
+POST http://localhost:3003/api/users/
+content-type: application/json
+
+{
+  "username": "M",
+  "name": "Mad Dog",
+  "password": "123"
 }
