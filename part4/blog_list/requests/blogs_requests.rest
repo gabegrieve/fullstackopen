@@ -4,7 +4,7 @@ GET http://localhost:3003/api/blogs/
 
 POST http://localhost:3003/api/blogs/
 content-type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hZGRvZyIsImlkIjoiNjM3NzA1YzRjNTFkODhiOWU0NjVjM2M2IiwiaWF0IjoxNjY4NzQ1MzM1fQ.MHX-f8bmxysFyPJRj9_eibEnHSMJp1-6Xwf12smvLuI
+Authorization: bearer pyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hZGRvZyIsImlkIjoiNjM3NzA1YzRjNTFkODhiOWU0NjVjM2M2IiwiaWF0IjoxNjY4NzQ1MzM1fQ.MHX-f8bmxysFyPJRj9_eibEnHSMJp1-6Xwf12smvLuI
 
 {
   "title": "Mad Dogs Blog",
