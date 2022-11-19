@@ -1,3 +1,4 @@
+const jwt = require("jsonwebtoken");
 const Blog = require("../models/blog");
 const User = require("../models/user");
 
@@ -36,6 +37,8 @@ const usersInDb = async () => {
 
 module.exports = {
   initialBlogs,
+  initialUser,
+  initialUserToken,
   nonExistingId,
   blogsInDb,
   usersInDb,

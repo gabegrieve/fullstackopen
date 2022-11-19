@@ -4,7 +4,7 @@ GET http://localhost:3003/api/blogs/
 
 POST http://localhost:3003/api/blogs/
 content-type: application/json
-Authorization: bearer pyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hZGRvZyIsImlkIjoiNjM3NzA1YzRjNTFkODhiOWU0NjVjM2M2IiwiaWF0IjoxNjY4NzQ1MzM1fQ.MHX-f8bmxysFyPJRj9_eibEnHSMJp1-6Xwf12smvLuI
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hZGRvZyIsImlkIjoiNjM3NzA1YzRjNTFkODhiOWU0NjVjM2M2IiwiaWF0IjoxNjY4ODI0NjUzLCJleHAiOjE2Njg4MjgyNTN9.wlvjJRtwJMhUEvBqOHuig_X7G2ECWAAYkj3EtnqjqiA
 
 {
   "title": "Mad Dogs Blog",
@@ -13,3 +13,9 @@ Authorization: bearer pyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hZ
   "likes": 100,
   "userId": "637705c4c51d88b9e465c3c6"
 }
+
+###
+
+DELETE http://localhost:3003/api/blogs/63784128154be48f60ece958
+content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hZGRvZyIsImlkIjoiNjM3NzA1YzRjNTFkODhiOWU0NjVjM2M2IiwiaWF0IjoxNjY4ODI2NDU0LCJleHAiOjE2Njg4MzAwNTR9.rCA6Ss16GgUW7XvPCf09nQ37HHzZQueczeDbcDVIOz0

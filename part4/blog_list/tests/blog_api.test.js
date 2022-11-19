@@ -48,6 +48,7 @@ describe("Adding a new blog post", () => {
     };
     await api
       .post("/api/blogs")
+      .set("Authorization", `bearer ${helper.initialUserToken}`)
       .send(newBlog)
       .expect(201)
       .expect("Content-Type", /application\/json/);
