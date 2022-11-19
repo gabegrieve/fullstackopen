@@ -4,14 +4,6 @@ const { response } = require("express");
 const Blog = require("../models/blog");
 const User = require("../models/user");
 
-// const getTokenFrom = (request) => {
-//   const authorization = request.get("authorization");
-//   if (authorization && authorization.toLowerCase().startsWith("bearer ")) {
-//     return authorization.substring(7);
-//   }
-//   return null;
-// };
-
 blogsRouter.get("/", async (request, response) => {
   const blogs = await Blog.find({}).populate("user", { username: 1, name: 1 });
   response.json(blogs);
@@ -35,7 +27,7 @@ blogsRouter.post("/", async (request, response, next) => {
   const token = request.token;
 
   if (!token) {
-    return response.status(400).json({
+    return response.status(401).json({
       error: "Missing token",
     });
   }
@@ -72,13 +64,13 @@ blogsRouter.delete("/:id", async (request, response, next) => {
   const user = request.user;
 
   if (!token) {
-    return response.status(400).json({
+    return response.status(401).json({
       error: "Missing token",
     });
   }
 
   if (!user) {
-    return response.status(400).json({
+    return response.status(401).json({
       error: "No user",
     });
   }
@@ -96,7 +88,7 @@ blogsRouter.delete("/:id", async (request, response, next) => {
         next(exception);
       }
     } else {
-      response.status(400).json({
+      response.status(401).json({
         error: "Unauthorized",
       });
     }

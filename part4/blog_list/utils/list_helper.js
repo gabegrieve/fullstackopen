@@ -45,7 +45,6 @@ const mostBlogs = (blogs) => {
     author: Object.keys(sortedBlogs)[0],
     blogs: Object.values(sortedBlogs)[0],
   };
-  console.log(authorWithMostBlogs);
 
   return authorWithMostBlogs;
 };
