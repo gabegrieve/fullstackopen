@@ -26,6 +26,7 @@ const App = () => {
     event.preventDefault();
     try {
       const user = await loginService.login({ username, password });
+      blogService.setToken(user.token);
       setUser(user);
       setUsername("");
       setPassword("");
@@ -64,7 +65,7 @@ const App = () => {
     );
   };
 
-  if (user === null) {
+  const LoginForm = () => {
     return (
       <div>
         <h2>Login</h2>
@@ -92,17 +93,35 @@ const App = () => {
         </form>
       </div>
     );
-  }
+  };
+
+  const BlogForm = () => {
+    return (
+      <div>
+        <h2>Create a new blog</h2>
+        {/* Todo: Create blog form */}
+      </div>
+    );
+  };
+
+  const BlogList = () => {
+    return (
+      <>
+        <h2>Blogs</h2>
+        <UserMessage name={user.name} />
+        <button onClick={handleLogout}>Log out</button>
+        {blogs.map((blog) => (
+          <Blog key={blog.id} blog={blog} />
+        ))}
+      </>
+    );
+  };
 
   return (
-    <div>
-      <h2>Blogs</h2>
-      <UserMessage name={user.name} />
-      <button onClick={handleLogout}>Log out</button>
-      {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} />
-      ))}
-    </div>
+    <>
+      {user !== null && BlogList()}
+      {user === null ? LoginForm() : BlogForm()}
+    </>
   );
 };
 
