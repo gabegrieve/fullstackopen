@@ -8,7 +8,11 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [blogTitle, setBlogTitle] = useState("");
+  const [blogAuthor, setBlogAuthor] = useState("");
+  const [blogUrl, setBlogUrl] = useState("");
+  const [successMessage, setSuccessMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -46,9 +50,32 @@ const App = () => {
     window.localStorage.removeItem("loggedInBlogUser");
   };
 
-  const Notification = ({ message }) => {
+  const handleBlogSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const newBlogObject = {
+        title: blogTitle,
+        author: blogAuthor,
+        url: blogUrl,
+        likes: 0,
+      };
+      blogService.setToken(user.token);
+      const response = await blogService.create(newBlogObject);
+      setSuccessMessage("Blog created successfully.");
+      setTimeout(() => {
+        setSuccessMessage(null);
+      }, 5000);
+    } catch (exception) {
+      setErrorMessage(exception.message);
+      setTimeout(() => {
+        setErrorMessage(null);
+      }, 5000);
+    }
+  };
+
+  const Notification = ({ message, color }) => {
     const style = {
-      color: "red",
+      color: color,
     };
     return (
       <>
@@ -99,7 +126,38 @@ const App = () => {
     return (
       <div>
         <h2>Create a new blog</h2>
-        {/* Todo: Create blog form */}
+        <Notification message={errorMessage} color="red" />
+        <Notification message={successMessage} color="green" />
+        <form onSubmit={handleBlogSubmit}>
+          <div>
+            <span>Title:</span>
+            <input
+              type="text"
+              value={blogTitle}
+              name="title"
+              onChange={({ target }) => setBlogTitle(target.value)}
+            />
+          </div>
+          <div>
+            <span>Author:</span>
+            <input
+              type="text"
+              value={blogAuthor}
+              name="author"
+              onChange={({ target }) => setBlogAuthor(target.value)}
+            />
+          </div>
+          <div>
+            <span>Url:</span>
+            <input
+              type="text"
+              value={blogUrl}
+              name="url"
+              onChange={({ target }) => setBlogUrl(target.value)}
+            />
+          </div>
+          <button type="submit">Create new blog</button>
+        </form>
       </div>
     );
   };
