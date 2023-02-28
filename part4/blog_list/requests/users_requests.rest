@@ -20,3 +20,14 @@ content-type: application/json
   "name": "Gabe Grieve",
   "password": "gaberules"
 }
+
+###
+
+POST http://localhost:3003/api/users/
+content-type: application/json
+
+{
+  "username": "root",
+  "name": "Admin",
+  "password": "password"
+}
